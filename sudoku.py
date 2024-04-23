@@ -1,9 +1,10 @@
 import pygame
+from cell import Cell
 
 pygame.init()
 screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Sudoku")
-screen.fill("white")
+screen.fill((205, 173, 135))
 
 def main():
     draw_game_start()
@@ -25,6 +26,9 @@ def main():
                             
                         case pygame.K_o:
                             draw_game_over()
+
+                        case pygame.K_r:
+                            draw_game_run()
 
         pygame.display.update()
 
@@ -77,6 +81,10 @@ def draw_game_over():
     restart_surf = pygame.font.Font("font.ttf", 25).render("Restart", 1, "black")
     restart_rect = restart_surf.get_rect(center=(400, 425))
     screen.blit(restart_surf, restart_rect)
+
+def draw_game_run():
+    screen.fill((205, 173, 135))
+
 
 if __name__ == "__main__":
     main()
