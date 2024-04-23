@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Sudoku")
-screen.fill("white")
+screen.fill((205, 173, 135))
 
 def main():
     draw_game_start()
