@@ -76,7 +76,7 @@ class Board:
     def is_full(self):
         for i in range(9):
             for j in range(9):
-                if(Cell.get_value(self.boardList[i][j]) == 0):
+                if self.boardList[i][j].getValue() == 0:
                     return False
 
         return True
