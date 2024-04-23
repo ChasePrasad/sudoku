@@ -20,8 +20,6 @@ class Cell:
         # finds the x, y, width, and height of each cell
         width = self.screen.get_width() // 9
         height = self.screen.get_height() // 9
-        x = width * self.column
-        y = height * self.row
 
         # finds the color when a cell is selected and draws the cell onto the screen
         color = None
