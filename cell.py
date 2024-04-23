@@ -16,6 +16,10 @@ class Cell:
     def set_sketched_value(self, value):
         self.sketched_value = value
 
+    #made by Murali Krishna Lingamsetty
+    def get_value(self):
+        return self.value
+
     def draw(self):
         # finds the x, y, width, and height of each cell
         width = self.screen.get_width() // 9
