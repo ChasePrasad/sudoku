@@ -78,8 +78,8 @@ class Board:
             for j in range(9):
                 if self.boardList[i][j].getValue() == 0:
                     return False
-
         return True
+
     def update_board(self, value, row, col):
         self.playerBoard[row][col] = value
 
@@ -89,11 +89,11 @@ class Board:
                 if(Cell.get_value(self.boardList[i][j]) == 0):
                     #returns row, column
                     return i, j
+        return False
 
     def check_board(self):
         for i in range(9):
             for j in range(9):
                 if(Cell.get_value(self.boardList[i][j]) != self.answerBoard[i][j]):
                     return False
-
         return True
