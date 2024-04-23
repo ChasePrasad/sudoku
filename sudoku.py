@@ -1,12 +1,15 @@
 import pygame
+from board import Board
+
 
 pygame.init()
-screen = pygame.display.set_mode((800, 800))
+screen = pygame.display.set_mode((900, 900))
 pygame.display.set_caption("Sudoku")
 screen.fill((205, 173, 135))
 
 def main():
     draw_game_start()
+    boardobj = Board(900, 900, screen, None)
     
     while True:
         for event in pygame.event.get():
@@ -28,6 +31,9 @@ def main():
 
                         case pygame.K_r:
                             draw_game_run()
+
+                        case pygame.K_b:
+                            boardobj.draw()
 
         pygame.display.update()
 
