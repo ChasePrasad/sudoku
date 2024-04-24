@@ -1,7 +1,7 @@
 import pygame
 import math
 
-import sudoku_generator
+from sudoku_generator import SudokuGenerator
 from cell import Cell
 
 class Board:
@@ -18,7 +18,11 @@ class Board:
         #else:
             #generator = SudokuGenerator(9, 50)
 
-        self.answerBoard, self.playerBoard = sudoku_generator.generate_sudoku(9, 30)
+        generator = SudokuGenerator(9, 30)
+        generator.fill_values()
+        self.answerBoard = generator.get_board()
+        generator.remove_cells()
+        self.playerBoard = generator.get_board()
 
         self.boardList = [[0] * 9 for i in range(9)]
 
@@ -41,7 +45,7 @@ class Board:
         # Big if true: return True, x coordinate of click, y coordinate of click
         # Garbaje if false, return None
         coordinates = pygame.mouse.get_pos()
-        if ((0 < coordinates[0] and coordinates[0] < 900) and (0< coordinates[1] and coordinates[1] < 900)):
+        if ((0 < coordinates[0] and coordinates[0] < 540) and (0< coordinates[1] and coordinates[1] < 540)):
             return True, coordinates[0], coordinates[1]
         else:
             return None
