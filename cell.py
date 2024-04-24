@@ -16,29 +16,29 @@ class Cell:
     def set_sketched_value(self, value):
         self.sketched_value = value
 
-    #made by Murali Krishna Lingamsetty
+    # made by Murali Krishna Lingamsetty
     def get_value(self):
         return self.value
 
     def draw(self):
-        # finds the x, y, width, and height of each cell
+        # finds the width, and height of each cell
         width = self.screen.get_width() // 9
-        height = self.screen.get_height() // 9
+        height = (self.screen.get_height() - 60) // 9
 
         # finds the color when a cell is selected and draws the cell onto the screen
         color = None
         color = "red" if self.chosen else "black"
-        pygame.draw.rect(self.screen, color, pygame.Rect(0, 0, 100, 100), 2)
+        pygame.draw.rect(self.screen, color, pygame.Rect(0, 0, 60, 60), 2)
 
         # displays a number when the cell has a value
         if self.value != 0:
-            text = pygame.font.Font("font.ttf", 50).render(str(self.value), 1, "black")
+            text = pygame.font.Font("font.ttf", 25).render(str(self.value), 1, "black")
             text_rect = text.get_rect(center=(width //2, height // 2))
             self.screen.blit(text, text_rect)
 
         # displays the sketched number for a cell
         elif self.sketched_value != 0:
-            text = pygame.font.Font("font.ttf", 50).render(str(self.sketched_value), 1, (112, 98, 76))
+            text = pygame.font.Font("font.ttf", 25).render(str(self.sketched_value), 1, (112, 98, 76))
             text_rect = text.get_rect(center=(width // 2, height // 2))
             self.screen.blit(text, text_rect)
 
