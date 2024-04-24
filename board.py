@@ -1,6 +1,6 @@
 import pygame
 
-import sudoku_generator
+from sudoku_generator import SudokuGenerator
 from cell import Cell
 
 class Board:
@@ -16,8 +16,11 @@ class Board:
             #generator = SudokuGenerator(9, 40)
         #else:
             #generator = SudokuGenerator(9, 50)
-
-        self.answerBoard, self.playerBoard = sudoku_generator.generate_sudoku(9, 30)
+        generator = SudokuGenerator(9, 30)
+        generator.fill_values()
+        self.answerBoard = generator.get_board()
+        generator.remove_cells()
+        self.playerBoard = generator.get_board()
 
         self.boardList = [[0] * 9 for i in range(9)]
 
