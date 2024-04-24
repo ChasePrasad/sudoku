@@ -56,7 +56,7 @@ class Board:
             return None
 
     def clear(self, row, col):
-        Cell(0, row, col, self.screen)
+        self.boardList[row][col] = Cell(0, row, col, self.screen)
 
     def sketch(self, value):
         self.sketchValue = value
@@ -86,7 +86,7 @@ class Board:
     def find_empty(self):
         for i in range(9):
             for j in range(9):
-                if(Cell.get_value(self.boardList[i][j]) == 0):
+                if(self.boardList[i][j].getValue() == 0):
                     #returns row, column
                     return i, j
         return False
@@ -94,6 +94,6 @@ class Board:
     def check_board(self):
         for i in range(9):
             for j in range(9):
-                if(Cell.get_value(self.boardList[i][j]) != self.answerBoard[i][j]):
+                if((self.boardList[i][j].getValue()) != self.answerBoard[i][j]):
                     return False
         return True
