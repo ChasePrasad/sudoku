@@ -2,7 +2,7 @@ import pygame
 from board import Board
 from cell import Cell
 
-# use the screen size of 630, 700
+
 pygame.init()
 screen = pygame.display.set_mode((540, 600))
 pygame.display.set_caption("Sudoku")
@@ -10,7 +10,7 @@ screen.fill((205, 173, 135))
 
 def main():
     draw_game_start()
-    boardobj = Board(900, 900, screen, None)
+    boardobj = Board(540, 600, screen, None)
     
     while True:
         for event in pygame.event.get():
@@ -40,11 +40,10 @@ def main():
         pygame.display.update()
 
 def draw_game_start():
-    screen.fill((205, 173, 135))
+    #screen.blit(pygame.image.load("bg.jpg"), (0, 0))
     image = pygame.image.load("bg.jpg")
     image = pygame.transform.scale(image, (540, 600))
     screen.blit(image, (0, 0))
-
     welcome_surf = pygame.font.Font("font.ttf", 75).render("Welcome to Sudoku", 1, "black")
     welcome_rect = welcome_surf.get_rect(center=(270, 115))
     screen.blit(welcome_surf, welcome_rect)
