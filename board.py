@@ -1,6 +1,7 @@
 import pygame
+import math
 
-from sudoku_generator import SudokuGenerator
+import sudoku_generator
 from cell import Cell
 
 class Board:
@@ -16,11 +17,8 @@ class Board:
             #generator = SudokuGenerator(9, 40)
         #else:
             #generator = SudokuGenerator(9, 50)
-        generator = SudokuGenerator(9, 30)
-        generator.fill_values()
-        self.answerBoard = generator.get_board()
-        generator.remove_cells()
-        self.playerBoard = generator.get_board()
+
+        self.answerBoard, self.playerBoard = sudoku_generator.generate_sudoku(9, 30)
 
         self.boardList = [[0] * 9 for i in range(9)]
 
@@ -32,11 +30,11 @@ class Board:
         for row in range(1, 10):
             for col in range(1, 10):
                 if (col % 3 == 0 and row % 3 == 0):
-                    pygame.draw.line(self.screen, (0, 0, 0), (col*100, 0), (col*100, 900), 3)
-                    pygame.draw.line(self.screen, (0, 0, 0), (0, row * 100), (900, row * 100), 3)
+                    pygame.draw.line(self.screen, (0, 0, 0), (col*60, 0), (col*60, self.height - 60), 3)
+                    pygame.draw.line(self.screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 3)
                 else:
-                    pygame.draw.line(self.screen, (0, 0, 0), (col*100, 0), (col*100, 900), 1)
-                    pygame.draw.line(self.screen, (0, 0, 0), (0, row * 100), (900, row * 100), 1)
+                    pygame.draw.line(self.screen, (0, 0, 0), (col*60, 0), (col*60, self.height - 60), 1)
+                    pygame.draw.line(self.screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 1)
 
     def click(self):
         # determines whether player clicks inside game board.
@@ -52,14 +50,20 @@ class Board:
     def select(self):
         self.status, self.xcoordinate, self.ycoordinate = self.click()
         if(self.status):
-            self.selectedColumn = self.xcoordinate // 100
-            self.selectedRow = self.ycoordinate // 100
-            return self.selectedColumn, self.selectedRow
+            self.selectedColumn = math.floor(float(self.xcoordinate / 60))
+            self.selectedRow = math.floor(float(self.ycoordinate / 60))
+
+            if(self.boardList[self.selectedRow][self.selectedColumn].getValue() != 0):
+                #return True if player can edit
+                return True, self.selectedColumn, self.selectedRow
+            else:
+                #return False if player CANNOT edit
+                return False, self.selectedColumn, self.selectedRow
         else:
             return None
 
     def clear(self, row, col):
-        self.boardList[row][col] = Cell(0, row, col, self.screen)
+        Cell(0, row, col, self.screen)
 
     def sketch(self, value):
         self.sketchValue = value
@@ -82,21 +86,21 @@ class Board:
                 if self.boardList[i][j].getValue() == 0:
                     return False
         return True
-
     def update_board(self, value, row, col):
         self.playerBoard[row][col] = value
 
     def find_empty(self):
         for i in range(9):
             for j in range(9):
-                if(self.boardList[i][j].getValue() == 0):
+                if(Cell.get_value(self.boardList[i][j]) == 0):
                     #returns row, column
                     return i, j
-        return False
+        return None
 
     def check_board(self):
         for i in range(9):
             for j in range(9):
-                if((self.boardList[i][j].getValue()) != self.answerBoard[i][j]):
+                if(Cell.get_value(self.boardList[i][j]) != self.answerBoard[i][j]):
                     return False
+
         return True
