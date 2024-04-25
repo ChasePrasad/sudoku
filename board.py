@@ -60,11 +60,12 @@ class Board:
 
     def deselect(self, row, col):
         self.boardList[row][col].set_chosen(False)
+        self.boardList[row][col].colored_cell(row, col)
     def clear(self, row, col):
         self.boardList[row][col].set_sketched_value(0)
 
     def sketch(self, value, row, col):
-        self.boardList[row][col].set_sketched_value(value)
+        self.boardList[row][col].Cell.set_sketched_value(value)
 
     def place_number(self, value):
         self.userInputColumn, self.userInputRow = self.select()
