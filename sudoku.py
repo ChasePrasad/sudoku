@@ -122,7 +122,8 @@ def draw_game_over():
 
 def draw_game_run(difficulty):
     screen.fill((205, 173, 135))
-    Board(540, 600, screen, difficulty).draw()
+    board = Board(540, 600, screen, difficulty)
+    board.draw()
 
     # prints and centers a rectangle
     button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
@@ -152,7 +153,7 @@ def draw_game_run(difficulty):
                 case pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
                     if button_reset.collidepoint(x, y):
-                        Board.clear()
+                        board.clear()
 
                     elif button_restart.collidepoint(x, y):
                         main()
@@ -160,10 +161,10 @@ def draw_game_run(difficulty):
                     elif button_exit.collidepoint(x, y):
                         exit()
                 case pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    selected = Board.click(pos)
-                    if selected == True:
-                        selected_cell = selected
+                    # allows the user to select a cell
+
+        pygame.display.update()
+        
 
 
 
