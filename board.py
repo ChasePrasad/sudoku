@@ -1,4 +1,3 @@
-
 import pygame
 import math
 
@@ -59,6 +58,8 @@ class Board:
             #return False if player CANNOT edit
             self.boardList[row][col].set_chosen(False)
 
+    def deselect(self, row, col):
+        self.boardList[row][col].set_chosen(False)
 
     def clear(self):
         for i in range(9):
