@@ -60,16 +60,13 @@ class Board:
 
     def deselect(self, row, col):
         self.boardList[row][col].set_chosen(False)
-
     def clear(self):
         for i in range(9):
             for j in range(9):
                 self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
 
-    def sketch(self, value):
-        self.sketchValue = value
-        Cell.set_sketched_value(self.sketchValue)
-        Cell.draw()
+    def sketch(self, value, row, col):
+        self.boardList[row][col].Cell.set_sketched_value(value)
 
     def place_number(self, value):
         self.userInputColumn, self.userInputRow = self.select()
