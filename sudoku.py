@@ -65,6 +65,7 @@ def main():
                         draw_game_run(3)
 
 
+
         pygame.display.update()
 
 
@@ -105,11 +106,11 @@ def draw_game_over():
     restart_rect = restart_surf.get_rect(center=(270, 548))
     screen.blit(restart_surf, restart_rect)
 
-    # # lets the user restart the game when they lose
-    # if losing == True:
-    #     if button_over_restart.collidepoint(x, y):
-    #         main()
-    #         running = False
+    # lets the user restart the game when they lose
+    if losing == True:
+        if button_over_restart.collidepoint(x, y):
+            main()
+            running = False
 
 
 def draw_game_run(difficulty):

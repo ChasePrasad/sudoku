@@ -20,6 +20,9 @@ class Cell:
     def get_value(self):
         return self.value
 
+    def set_chosen(self, chosen):
+        self.chosen = chosen
+
     def draw(self):
         # finds the color when a cell is selected and draws the cell onto the screen
         color = None
