@@ -1,3 +1,4 @@
+
 import pygame
 import math
 
@@ -63,6 +64,7 @@ class Board:
 
     def deselect(self, row, col):
         self.boardList[row][col].set_chosen(False)
+        self.boardList[row][col].colored_cell(row, col)
     def clear(self, row, col):
         self.boardList[row][col].set_sketched_value(0)
 
@@ -78,6 +80,9 @@ class Board:
         for i in range(9):
             for j in range(9):
                 self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
+                self.boardList[i][j].set_sketched_value(0)
+
+
 
     def is_full(self):
         for i in range(9):
