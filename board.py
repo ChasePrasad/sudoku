@@ -53,10 +53,10 @@ class Board:
     def select(self, row, col):
         if(self.boardList[self.selectedRow][self.selectedColumn].getValue() == 0):
 
-            self.boardList[row][col].set_Chosen(True)
+            self.boardList[row][col].set_chosen(True)
         else:
             #return False if player CANNOT edit
-            self.boardList[row][col].set_Chosen(False)
+            self.boardList[row][col].set_chosen(False)
 
 
     def clear(self):
