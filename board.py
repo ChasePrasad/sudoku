@@ -44,7 +44,7 @@ class Board:
 
         if ((0 < xcoord and xcoord < 540) and (0< ycoord and ycoord < 540)):
             self.selectedColumn = math.floor(float(xcoord / 60))
-            self.selectedRow = math.floor(float(self.ycoord / 60))
+            self.selectedRow = math.floor(float(ycoord / 60))
             return self.selectedRow, self.selectedColumn
         else:
             return None
