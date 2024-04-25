@@ -169,13 +169,14 @@ def draw_game_run(difficulty):
 
                     elif button_exit.collidepoint(x, y):
                         exit()
-                case pygame.MOUSEBUTTONDOWN:
-                    # allows the user to select a cell
+                    else:
+                        row, col = board.click(x, y)
 
+                        if row is not None:
+                            board.select(row, col)
+                            board.draw()
 
         pygame.display.update()
-
-
 
 if __name__ == "__main__":
     main()
