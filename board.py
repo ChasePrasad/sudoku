@@ -48,11 +48,11 @@ class Board:
             self.selectedRow = math.floor(float(ycoord / 60))
             return self.selectedRow, self.selectedColumn
         else:
-            return None
+            return None, None
 
     #finds which cell is selected, returns x and y coordinates
     def select(self, row, col):
-        if(self.boardList[self.selectedRow][self.selectedColumn].getValue() == 0):
+        if(self.boardList[self.selectedRow][self.selectedColumn].get_value() == 0):
 
             self.boardList[row][col].set_chosen(True)
         else:
@@ -83,7 +83,7 @@ class Board:
     def is_full(self):
         for i in range(9):
             for j in range(9):
-                if self.boardList[i][j].getValue() == 0:
+                if self.boardList[i][j].get_value() == 0:
                     return False
         return True
     def update_board(self, value, row, col):
