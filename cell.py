@@ -25,7 +25,6 @@ class Cell:
 
     def draw(self):
         # finds the color when a cell is selected and draws the cell onto the screen
-        color = None
         color = "red" if self.chosen else "black"
         pygame.draw.rect(self.screen, color, pygame.Rect(self.row * 60, self.column * 60, 60, 60), 1)
 

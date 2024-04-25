@@ -130,6 +130,7 @@ def draw_game_run(difficulty):
     screen.fill((205, 173, 135))
     board = Board(540, 600, screen, difficulty)
     board.draw()
+    row, col = 0, 0
 
     # prints and centers a rectangle
     button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
@@ -170,7 +171,8 @@ def draw_game_run(difficulty):
                     elif button_exit.collidepoint(x, y):
                         exit()
                     else:
-                        row, col = board.click(x, y)
+                        board.deselect(row, col)
+                        row, col = board.click(y, x)
 
                         if row is not None:
                             board.select(row, col)
