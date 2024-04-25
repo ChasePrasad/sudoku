@@ -60,13 +60,11 @@ class Board:
 
     def deselect(self, row, col):
         self.boardList[row][col].set_chosen(False)
-    def clear(self):
-        for i in range(9):
-            for j in range(9):
-                self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
+    def clear(self, row, col):
+        self.boardList[row][col].set_sketched_value(0)
 
     def sketch(self, value, row, col):
-        self.boardList[row][col].set_sketched_value(value)
+        self.boardList[row][col].Cell.set_sketched_value(value)
 
     def place_number(self, value):
         self.userInputColumn, self.userInputRow = self.select()
@@ -76,7 +74,7 @@ class Board:
     def reset_to_original(self):
         for i in range(9):
             for j in range(9):
-                self.boardList[i][j] = [Cell(self.playerBoard[i][j], i, j, self.screen)]
+                self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
 
     def is_full(self):
         for i in range(9):
