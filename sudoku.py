@@ -87,6 +87,9 @@ def draw_game_won():
     while True:
         for event in pygame.event.get():
             match event.type:
+                case pygame.QUIT:
+                    pygame.quit()
+                    exit()
                 case pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
                     if button_won_exit.collidepoint(x, y):
@@ -113,6 +116,9 @@ def draw_game_over():
     while True:
         for event in pygame.event.get():
             match event.type:
+                case pygame.QUIT:
+                    pygame.quit()
+                    exit()
                 case pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
                     if button_over_restart.collidepoint(x, y):
@@ -150,6 +156,9 @@ def draw_game_run(difficulty):
     while True:
         for event in pygame.event.get():
             match event.type:
+                case pygame.QUIT:
+                    pygame.quit()
+                    exit()
                 case pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
                     if button_reset.collidepoint(x, y):
@@ -162,7 +171,7 @@ def draw_game_run(difficulty):
                         exit()
                 case pygame.MOUSEBUTTONDOWN:
                     # allows the user to select a cell
-                    pass
+
 
         pygame.display.update()
 
