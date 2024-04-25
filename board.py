@@ -11,14 +11,13 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
 
-        #if self.difficulty == 1:
-            #generator = SudokuGenerator(9, 30)
-        #elif self.difficulty == 2:
-            #generator = SudokuGenerator(9, 40)
-        #else:
-            #generator = SudokuGenerator(9, 50)
+        if self.difficulty == 1:
+            generator = SudokuGenerator(9, 30)
+        elif self.difficulty == 2:
+            generator = SudokuGenerator(9, 40)
+        elif self.difficulty == 3:
+            generator = SudokuGenerator(9, 50)
 
-        generator = SudokuGenerator(9, 30)
         generator.fill_values()
         self.answerBoard = generator.get_board()
         generator.remove_cells()
@@ -41,7 +40,6 @@ class Board:
     def click(self):
         # determines whether player clicks inside game board.
         # Big if true: return True, x coordinate of click, y coordinate of click
-        # Garbaje if false, return None
         coordinates = pygame.mouse.get_pos()
         if ((0 < coordinates[0] and coordinates[0] < 540) and (0< coordinates[1] and coordinates[1] < 540)):
             return True, coordinates[0], coordinates[1]

@@ -8,71 +8,7 @@ screen.fill((205, 173, 135))
 
 
 def main():
-    running = False
-    winning = False
-    losing = False
-    draw_game_start()
-    
-    while True:
-        for event in pygame.event.get():
-            match event.type:
-                case pygame.QUIT:
-                    pygame.quit()
-                    exit()
-                case pygame.MOUSEBUTTONDOWN:
-                    x, y = event.pos
-                    # lets the user pick game modes
-                    # easy mode
-                    if button_easy.collidepoint(x, y):
-                        draw_game_run()
-                        running = True
-
-                    # medium mode
-                    elif button_medium.collidepoint(x, y):
-                        draw_game_run()
-                        running = True
-
-                    # hard mode
-                    elif button_hard.collidepoint(x, y):
-                        draw_game_run()
-                        running = True
-
-                    # lets the user pick out of the buttons when the game is running
-                    if running == True:
-                        if button_reset.collidepoint(x, y):
-                            print("reset")
-
-                        elif button_restart.collidepoint(x, y):
-                            main()
-                            running = False
-                            
-                        elif button_exit.collidepoint(x, y):
-                            exit()
-
-                    # lets the user exit the game when they win
-                    if winning == True:
-                        if button_won_exit.collidepoint(x, y):
-                            exit()
-
-                    # lets the user restart the game when they lose
-                    if losing == True:
-                        if button_over_restart.collidepoint(x, y):
-                            main()
-                            running = False
-
-
-                case pygame.KEYDOWN:
-                    match event.key:
-                        case pygame.K_w:
-                            draw_game_won()
-
-                        case pygame.K_o:
-                            draw_game_over()
-
-
-        pygame.display.update()
-
-def draw_game_start():
+    # homescreen for sudoku
     # centers and imports the sudoku logo
     screen.blit(pygame.image.load("bg.jpg"), (0, 0))
 
@@ -87,25 +23,50 @@ def draw_game_start():
     screen.blit(mode_surf, mode_rect)
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(75, 530, 90, 35))
+    button_easy = pygame.draw.rect(screen, "white", pygame.Rect(75, 530, 90, 35))
     # prints and centers the game mode: easy text using the correct font, font size, color
     easy_surf = pygame.font.Font("font.ttf", 18).render("Easy", 1, "black")
     easy_rect = easy_surf.get_rect(center=(120, 548))
     screen.blit(easy_surf, easy_rect)
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
+    button_med = pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
     # prints and centers the game mode: medium text using the correct font, font size, color
     medium_surf = pygame.font.Font("font.ttf", 18).render("Medium", 1, "black")
     medium_rect = medium_surf.get_rect(center=(270, 548))
     screen.blit(medium_surf, medium_rect)
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(375, 530, 90, 35))
+    button_hard = pygame.draw.rect(screen, "white", pygame.Rect(375, 530, 90, 35))
     # prints and centers the game mode: hard text using the correct font, font size, color
     hard_surf = pygame.font.Font("font.ttf", 18).render("Hard", 1, "black")
     hard_rect = hard_surf.get_rect(center=(420, 548))
     screen.blit(hard_surf, hard_rect)
+
+    while True:
+        for event in pygame.event.get():
+            match event.type:
+                case pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                case pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    # lets the user pick game modes
+                    # easy mode
+                    if button_easy.collidepoint(x, y):
+                        draw_game_run(1)
+
+                    # medium mode
+                    elif button_med.collidepoint(x, y):
+                        draw_game_run(2)
+
+                    # hard mode
+                    elif button_hard.collidepoint(x, y):
+                        draw_game_run(3)
+
+
+        pygame.display.update()
+
 
 def draw_game_won():
     # centers and imports the sudoku logo
@@ -123,6 +84,11 @@ def draw_game_won():
     exit_rect = exit_surf.get_rect(center=(270, 548))
     screen.blit(exit_surf, exit_rect)
 
+    # # lets the user exit the game when they win
+    # if winning == True:
+    #     if button_won_exit.collidepoint(x, y):
+    #         exit()
+
 def draw_game_over():
     # centers and imports the sudoku logo
     screen.blit(pygame.image.load("bg.jpg"), (0, 0))
@@ -139,41 +105,68 @@ def draw_game_over():
     restart_rect = restart_surf.get_rect(center=(270, 548))
     screen.blit(restart_surf, restart_rect)
 
-def draw_game_run():
+    # # lets the user restart the game when they lose
+    # if losing == True:
+    #     if button_over_restart.collidepoint(x, y):
+    #         main()
+    #         running = False
+
+
+def draw_game_run(difficulty):
     screen.fill((205, 173, 135))
-    Board(540, 600, screen, None).draw()
+    Board(540, 600, screen, difficulty).draw()
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
+    button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
     # prints and centers the game mode: easy text using the correct font, font size, color
     easy_surf = pygame.font.Font("font.ttf", 18).render("Reset", 1, "black")
     easy_rect = easy_surf.get_rect(center=(120, 568))
     screen.blit(easy_surf, easy_rect)
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(225, 550, 90, 35))
+    button_restart = pygame.draw.rect(screen, "white", pygame.Rect(225, 550, 90, 35))
     # prints and centers the game mode: medium text using the correct font, font size, color
     medium_surf = pygame.font.Font("font.ttf", 18).render("Restart", 1, "black")
     medium_rect = medium_surf.get_rect(center=(270, 568))
     screen.blit(medium_surf, medium_rect)
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(375, 550, 90, 35))
+    button_exit = pygame.draw.rect(screen, "white", pygame.Rect(375, 550, 90, 35))
     # prints and centers the game mode: hard text using the correct font, font size, color
     hard_surf = pygame.font.Font("font.ttf", 18).render("Exit", 1, "black")
     hard_rect = hard_surf.get_rect(center=(420, 568))
     screen.blit(hard_surf, hard_rect)
 
+    # lets the user reset, restart, and exit when the game is running
+    while True:
+        for event in pygame.event.get():
+            match event.type:
+                case pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if button_reset.collidepoint(x, y):
+                        Board.clear()
 
-# all buttons as global variables
-button_easy = pygame.draw.rect(screen, "white", pygame.Rect(75, 530, 90, 35))
-button_medium =     pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
-button_hard = pygame.draw.rect(screen, "white", pygame.Rect(375, 530, 90, 35))
-button_won_exit = pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
-button_over_restart = pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
-button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
-button_restart = pygame.draw.rect(screen, "white", pygame.Rect(225, 550, 90, 35))
-button_exit = pygame.draw.rect(screen, "white", pygame.Rect(375, 550, 90, 35))
+                    elif button_restart.collidepoint(x, y):
+                        main()
+
+                    elif button_exit.collidepoint(x, y):
+                        exit()
+                case pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    selected = Board.click(pos)
+                    if selected == True:
+                        selected_cell = selected
+
+                    # elif event.type == pygame.KEYDOWN:
+                    #     if selected_cell:
+                    #         if event.unicode.isdigit() and 0 < int(
+                    #                 event.unicode) < 10:  # Check if the key is a number between 1 and 9
+                    #             board.sketch(selected_cell, int(event.unicode))
+
+
+        pygame.display.update()
+
+
 
 
 if __name__ == "__main__":
