@@ -66,7 +66,7 @@ class Board:
                 self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
 
     def sketch(self, value, row, col):
-        self.boardList[row][col].Cell.set_sketched_value(value)
+        self.boardList[row][col].set_sketched_value(value)
 
     def place_number(self, value):
         self.userInputColumn, self.userInputRow = self.select()
