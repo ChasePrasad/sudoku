@@ -1,3 +1,4 @@
+
 import pygame
 from board import Board
 
@@ -166,9 +167,9 @@ def draw_game_run(difficulty):
                 case pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
                     if button_reset.collidepoint(x, y):
-                        # board.reset_to_original()
-                        # board.draw()
-                        print("reset")
+                        board.reset_to_original()
+                        board.draw()
+                        #print("reset")
                     elif button_restart.collidepoint(x, y):
                         main()
                     elif button_exit.collidepoint(x, y):
