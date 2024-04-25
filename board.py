@@ -1,7 +1,7 @@
 import pygame
 import math
 
-import sudoku_generator
+from sudoku_generator import SudokuGenerator
 from cell import Cell
 
 class Board:
@@ -18,7 +18,11 @@ class Board:
         #else:
             #generator = SudokuGenerator(9, 50)
 
-        self.answerBoard, self.playerBoard = sudoku_generator.generate_sudoku(9, 30)
+        generator = SudokuGenerator(9, 30)
+        generator.fill_values()
+        self.answerBoard = generator.get_board()
+        generator.remove_cells()
+        self.playerBoard = generator.get_board()
 
         self.boardList = [[0] * 9 for i in range(9)]
 
@@ -27,11 +31,11 @@ class Board:
                 self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
 
     def draw(self):
-        for row in range(9):
+         for row in range(9):
             for col in range(9):
                 self.boardList[row][col].draw()
                 if (row != 0 and col != 0 and col % 3 == 0 and row % 3 == 0):
-                    pygame.draw.line(self.screen, (0, 0, 0), (col*60, 0), (col*60, self.height - 60), 6)
+                    pygame.draw.line(self.screen, (0, 0, 0), (col * 60, 0), (col * 60, self.height - 60), 6)
                     pygame.draw.line(self.screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 6)
 
     def click(self):
