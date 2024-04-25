@@ -32,6 +32,9 @@ class Board:
     def setDifficulty(self, diff):
         self.difficulty = diff
 
+    def getCell(self, row, col):
+        return self.boardList[row][col]
+
     def draw(self):
          for row in range(9):
             for col in range(9):
@@ -60,21 +63,24 @@ class Board:
 
     def deselect(self, row, col):
         self.boardList[row][col].set_chosen(False)
+        self.boardList[row][col].colored_cell(row, col)
+
     def clear(self, row, col):
         self.boardList[row][col].set_sketched_value(0)
 
     def sketch(self, value, row, col):
         self.boardList[row][col].set_sketched_value(value)
 
-    def place_number(self, value):
-        self.userInputColumn, self.userInputRow = self.select()
-        self.boardList[self.UserInputRow][self.userInputColumn] = Cell(value, self.UserInputRow, self.userInputColumn, self.screen)
-        self.update_board(value, self.UserInputRow, self.userInputColumn)
+    def place_number(self, value, row, col):
+
+        self.boardList[row][col].set_cell_value(value)
+        self.update_board(value, row, col)
 
     def reset_to_original(self):
         for i in range(9):
             for j in range(9):
                 self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
+                self.boardList[i][j].set_sketched_value(0)
 
     def is_full(self):
         for i in range(9):

@@ -4,7 +4,7 @@ from board import Board
 pygame.init()
 screen = pygame.display.set_mode((540, 600))
 pygame.display.set_caption("Sudoku")
-screen.fill((205, 173, 135))
+screen.fill(44)
 
 
 def main():
@@ -131,6 +131,7 @@ def draw_game_run(difficulty):
     board = Board(540, 600, screen, difficulty)
     board.draw()
     row, col = 0, 0
+    num = 0
 
     # prints and centers a rectangle
     button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
@@ -153,30 +154,57 @@ def draw_game_run(difficulty):
     hard_rect = hard_surf.get_rect(center=(420, 568))
     screen.blit(hard_surf, hard_rect)
 
-    # lets the user reset, restart, and exit when the game is running
+    # user inputs for the game running screen
     while True:
         for event in pygame.event.get():
             match event.type:
                 case pygame.QUIT:
                     pygame.quit()
                     exit()
+
+                # lets the user reset, restart, and exit when the game is running
                 case pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
                     if button_reset.collidepoint(x, y):
-                        board.clear()
-
+                        # board.reset_to_original()
+                        # board.draw()
+                        print("reset")
                     elif button_restart.collidepoint(x, y):
                         main()
-
                     elif button_exit.collidepoint(x, y):
                         exit()
+
+                    # lets the user select a cell
                     else:
                         board.deselect(row, col)
                         row, col = board.click(y, x)
-
                         if row is not None:
                             board.select(row, col)
                             board.draw()
+
+                case pygame.KEYDOWN:
+                    # lets the user place a number after sketching
+                    if event.key == pygame.K_RETURN:
+                        if row is not None and col is not None:
+                            sketched_value = board.getCell(row, col).get_sketched_value()
+                            if sketched_value != 0 and board.isValid(row, col, sketched_value):
+                                board.place_number(sketched_value)
+                                board.draw()
+
+                    # lets the user sketch in each cell
+                    elif row is not None and col is not None:
+                        if board.getCell(row, col).get_value() not in range(1, 10):
+                            if event.unicode.isdigit():
+                                if 0 < int(event.unicode) < 10:
+                                    if board.getCell(row, col).get_sketched_value() == 0:
+                                        board.sketch(int(event.unicode), row, col)
+                                        board.draw()
+                                    else:
+                                        board.clear(row, col)
+                                        board.draw()
+                                        board.sketch(int(event.unicode), row, col)
+                                        board.draw()
+
 
         pygame.display.update()
 
