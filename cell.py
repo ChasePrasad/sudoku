@@ -1,3 +1,4 @@
+
 import pygame
 
 # represents a single cell in the Sudoku board
@@ -48,3 +49,8 @@ class Cell:
             text_rect = text.get_rect(center=(self.row * 60 + 30, self.column * 60 + 30))
             pygame.draw.rect(self.screen, (205, 173, 135), pygame.Rect((self.row * 60 + 30) - 30 / 2, (self.column * 60 + 30) - 30 / 2, 35, 35))
             self.screen.blit(text, text_rect)
+
+        # displays the sketched number for a cell
+        elif self.sketched_value == 0:
+            pygame.draw.rect(self.screen, (205, 173, 135), pygame.Rect((self.row * 60 + 30) - 30 / 2, (self.column * 60 + 30) - 30 / 2, 35, 35))
+
