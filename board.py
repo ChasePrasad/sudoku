@@ -32,13 +32,14 @@ class Board:
 
     def setDifficulty(self, diff):
         self.difficulty = diff
-    def draw(self, screen):
+
+    def draw(self):
          for row in range(9):
             for col in range(9):
                 self.boardList[row][col].draw()
                 if (row != 0 and col != 0 and col % 3 == 0 and row % 3 == 0):
-                    pygame.draw.line(screen, (0, 0, 0), (col * 60, 0), (col * 60, self.height - 60), 6)
-                    pygame.draw.line(screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 6)
+                    pygame.draw.line(self.screen, (0, 0, 0), (col * 60, 0), (col * 60, self.height - 60), 6)
+                    pygame.draw.line(self.screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 6)
 
     def click(self, xcoord, ycoord):
 
