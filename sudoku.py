@@ -64,8 +64,6 @@ def main():
                     elif button_hard.collidepoint(x, y):
                         draw_game_run(3)
 
-
-
         pygame.display.update()
 
 
@@ -79,16 +77,21 @@ def draw_game_won():
     screen.blit(won_surf, won_rect)
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
+    button_won_exit = pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
     # prints and centers the exit text using the correct font, font size, color
     exit_surf = pygame.font.Font("font.ttf", 18).render("Exit", 1, "black")
     exit_rect = exit_surf.get_rect(center=(270, 548))
     screen.blit(exit_surf, exit_rect)
 
-    # # lets the user exit the game when they win
-    # if winning == True:
-    #     if button_won_exit.collidepoint(x, y):
-    #         exit()
+    # lets the user exit the game when they win
+    while True:
+        for event in pygame.event.get():
+            match event.type:
+                case pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if button_won_exit.collidepoint(x, y):
+                        exit()
+        pygame.display.update()
 
 def draw_game_over():
     # centers and imports the sudoku logo
@@ -100,17 +103,21 @@ def draw_game_over():
     screen.blit(welcome_surf, welcome_rect)
 
     # prints and centers a rectangle
-    pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
+    button_over_restart = pygame.draw.rect(screen, "white", pygame.Rect(225, 530, 90, 35))
     # prints and centers the restart text using the correct font, font size, color
     restart_surf = pygame.font.Font("font.ttf", 18).render("Restart", 1, "black")
     restart_rect = restart_surf.get_rect(center=(270, 548))
     screen.blit(restart_surf, restart_rect)
 
     # lets the user restart the game when they lose
-    if losing == True:
-        if button_over_restart.collidepoint(x, y):
-            main()
-            running = False
+    while True:
+        for event in pygame.event.get():
+            match event.type:
+                case pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if button_over_restart.collidepoint(x, y):
+                        main()
+        pygame.display.update()
 
 
 def draw_game_run(difficulty):
@@ -157,16 +164,6 @@ def draw_game_run(difficulty):
                     selected = Board.click(pos)
                     if selected == True:
                         selected_cell = selected
-
-                    # elif event.type == pygame.KEYDOWN:
-                    #     if selected_cell:
-                    #         if event.unicode.isdigit() and 0 < int(
-                    #                 event.unicode) < 10:  # Check if the key is a number between 1 and 9
-                    #             board.sketch(selected_cell, int(event.unicode))
-
-
-        pygame.display.update()
-
 
 
 
