@@ -1,3 +1,4 @@
+
 import pygame
 import math
 
@@ -29,41 +30,39 @@ class Board:
             for j in range(9):
                 self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
 
-    def draw(self):
+    def setDifficulty(self, diff):
+        self.difficulty = diff
+    def draw(self, screen):
          for row in range(9):
             for col in range(9):
                 self.boardList[row][col].draw()
                 if (row != 0 and col != 0 and col % 3 == 0 and row % 3 == 0):
-                    pygame.draw.line(self.screen, (0, 0, 0), (col * 60, 0), (col * 60, self.height - 60), 6)
-                    pygame.draw.line(self.screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 6)
+                    pygame.draw.line(screen, (0, 0, 0), (col * 60, 0), (col * 60, self.height - 60), 6)
+                    pygame.draw.line(screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 6)
 
-    def click(self):
-        # determines whether player clicks inside game board.
-        # Big if true: return True, x coordinate of click, y coordinate of click
-        coordinates = pygame.mouse.get_pos()
-        if ((0 < coordinates[0] and coordinates[0] < 540) and (0< coordinates[1] and coordinates[1] < 540)):
-            return True, coordinates[0], coordinates[1]
+    def click(self, xcoord, ycoord):
+
+        if ((0 < xcoord and xcoord < 540) and (0< ycoord and ycoord < 540)):
+            self.selectedColumn = math.floor(float(xcoord / 60))
+            self.selectedRow = math.floor(float(self.ycoord / 60))
+            return self.selectedRow, self.selectedColumn
         else:
             return None
 
     #finds which cell is selected, returns x and y coordinates
-    def select(self):
-        self.status, self.xcoordinate, self.ycoordinate = self.click()
-        if(self.status):
-            self.selectedColumn = math.floor(float(self.xcoordinate / 60))
-            self.selectedRow = math.floor(float(self.ycoordinate / 60))
+    def select(self, row, col):
+        if(self.boardList[self.selectedRow][self.selectedColumn].getValue() == 0):
 
-            if(self.boardList[self.selectedRow][self.selectedColumn].getValue() != 0):
-                #return True if player can edit
-                return True, self.selectedColumn, self.selectedRow
-            else:
-                #return False if player CANNOT edit
-                return False, self.selectedColumn, self.selectedRow
+            self.boardList[row][col].set_Chosen(True)
         else:
-            return None
+            #return False if player CANNOT edit
+            self.boardList[row][col].set_Chosen(False)
 
-    def clear(self, row, col):
-        Cell(0, row, col, self.screen)
+
+    def clear(self):
+        for i in range(9):
+            for j in range(9):
+                self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
 
     def sketch(self, value):
         self.sketchValue = value
