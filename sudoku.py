@@ -162,9 +162,9 @@ def draw_game_run(difficulty):
                         exit()
                 case pygame.MOUSEBUTTONDOWN:
                     # allows the user to select a cell
+                    pass
 
         pygame.display.update()
-        
 
 
 
