@@ -68,6 +68,92 @@ def main():
         pygame.display.update()
 
 
+def draw_game_run(difficulty):
+    screen.fill((205, 173, 135))
+    board = Board(540, 600, screen, difficulty)
+    board.draw()
+    row, col = 0, 0
+
+    # prints and centers a rectangle
+    button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
+    # prints and centers the game mode: easy text using the correct font, font size, color
+    easy_surf = pygame.font.Font("font.ttf", 18).render("Reset", 1, "black")
+    easy_rect = easy_surf.get_rect(center=(120, 568))
+    screen.blit(easy_surf, easy_rect)
+
+    # prints and centers a rectangle
+    button_restart = pygame.draw.rect(screen, "white", pygame.Rect(225, 550, 90, 35))
+    # prints and centers the game mode: medium text using the correct font, font size, color
+    medium_surf = pygame.font.Font("font.ttf", 18).render("Restart", 1, "black")
+    medium_rect = medium_surf.get_rect(center=(270, 568))
+    screen.blit(medium_surf, medium_rect)
+
+    # prints and centers a rectangle
+    button_exit = pygame.draw.rect(screen, "white", pygame.Rect(375, 550, 90, 35))
+    # prints and centers the game mode: hard text using the correct font, font size, color
+    hard_surf = pygame.font.Font("font.ttf", 18).render("Exit", 1, "black")
+    hard_rect = hard_surf.get_rect(center=(420, 568))
+    screen.blit(hard_surf, hard_rect)
+
+    # user inputs for the game running screen
+    while True:
+        for event in pygame.event.get():
+            match event.type:
+                case pygame.QUIT:
+                    pygame.quit()
+                    exit()
+
+                # lets the user reset, restart, and exit when the game is running
+                case pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if button_reset.collidepoint(x, y):
+                        board.reset_to_original()
+                        board.draw()
+                        # print("reset")
+                    elif button_restart.collidepoint(x, y):
+                        main()
+                    elif button_exit.collidepoint(x, y):
+                        exit()
+
+                    # lets the user select a cell
+                    else:
+                        board.deselect(row, col)
+                        row, col = board.click(y, x)
+                        if row is not None:
+                            board.select(row, col)
+                            board.draw()
+
+                case pygame.KEYDOWN:
+                    # lets the user sketch in each cell
+                    row, col = board.click(y, x)
+                    if row is not None and col is not None:
+                        if board.getCell(row, col).get_value() not in range(1, 10):
+                            if event.unicode.isdigit():
+                                if 0 < int(event.unicode) < 10:
+                                    if board.getCell(row, col).get_sketched_value() == 0:
+                                        board.sketch(int(event.unicode), row, col)
+                                        board.draw()
+                                    else:
+                                        board.clear(row, col)
+                                        board.draw()
+                                        board.sketch(int(event.unicode), row, col)
+                                        board.draw()
+
+                    # lets the user place a number after sketching
+                    if event.key == pygame.K_RETURN:
+                        if row is not None and col is not None:
+                            sketched_value = board.getCell(row, col).get_sketched_value()
+                            if sketched_value != 0:
+                                board.place_number(sketched_value, row, col)
+                                board.draw()
+                                if board.is_full() == True:
+                                    if board.check_board() == True:
+                                        draw_game_won()
+                                    else:
+
+                                        draw_game_over()
+        pygame.display.update()
+
 def draw_game_won():
     # centers and imports the sudoku logo
     screen.blit(pygame.image.load("bg.jpg"), (0, 0))
@@ -126,89 +212,6 @@ def draw_game_over():
                         main()
         pygame.display.update()
 
-
-def draw_game_run(difficulty):
-    screen.fill((205, 173, 135))
-    board = Board(540, 600, screen, difficulty)
-    board.draw()
-    row, col = 0, 0
-
-    # prints and centers a rectangle
-    button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
-    # prints and centers the game mode: easy text using the correct font, font size, color
-    easy_surf = pygame.font.Font("font.ttf", 18).render("Reset", 1, "black")
-    easy_rect = easy_surf.get_rect(center=(120, 568))
-    screen.blit(easy_surf, easy_rect)
-
-    # prints and centers a rectangle
-    button_restart = pygame.draw.rect(screen, "white", pygame.Rect(225, 550, 90, 35))
-    # prints and centers the game mode: medium text using the correct font, font size, color
-    medium_surf = pygame.font.Font("font.ttf", 18).render("Restart", 1, "black")
-    medium_rect = medium_surf.get_rect(center=(270, 568))
-    screen.blit(medium_surf, medium_rect)
-
-    # prints and centers a rectangle
-    button_exit = pygame.draw.rect(screen, "white", pygame.Rect(375, 550, 90, 35))
-    # prints and centers the game mode: hard text using the correct font, font size, color
-    hard_surf = pygame.font.Font("font.ttf", 18).render("Exit", 1, "black")
-    hard_rect = hard_surf.get_rect(center=(420, 568))
-    screen.blit(hard_surf, hard_rect)
-
-    # user inputs for the game running screen
-    while True:
-        for event in pygame.event.get():
-            match event.type:
-                case pygame.QUIT:
-                    pygame.quit()
-                    exit()
-
-                # lets the user reset, restart, and exit when the game is running
-                case pygame.MOUSEBUTTONDOWN:
-                    x, y = event.pos
-                    if button_reset.collidepoint(x, y):
-                        board.reset_to_original()
-                        board.draw()
-                        #print("reset")
-                    elif button_restart.collidepoint(x, y):
-                        main()
-                    elif button_exit.collidepoint(x, y):
-                        exit()
-
-                    # lets the user select a cell
-                    else:
-                        board.deselect(row, col)
-                        row, col = board.click(y, x)
-                        if row is not None:
-                            board.select(row, col)
-                            board.draw()
-
-                case pygame.KEYDOWN:
-                    # lets the user sketch in each cell
-                    row, col = board.click(y, x)
-                    if row is not None and col is not None:
-                        if board.getCell(row, col).get_value() not in range(1, 10):
-                            if event.unicode.isdigit():
-                                if 0 < int(event.unicode) < 10:
-                                    if board.getCell(row, col).get_sketched_value() == 0:
-                                        board.sketch(int(event.unicode), row, col)
-                                        board.draw()
-                                    else:
-                                        board.clear(row, col)
-                                        board.draw()
-                                        board.sketch(int(event.unicode), row, col)
-                                        board.draw()
-
-                    # lets the user place a number after sketching
-                    if event.key == pygame.K_RETURN:
-                        print("Enter Key pressed")
-                        if row is not None and col is not None:
-                            sketched_value = board.getCell(row, col).get_sketched_value()
-                            if sketched_value != 0:
-                                board.place_number(sketched_value, row, col)
-                                board.draw()
-
-
-        pygame.display.update()
 
 if __name__ == "__main__":
     main()

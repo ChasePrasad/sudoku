@@ -13,7 +13,7 @@ class Board:
         self.difficulty = difficulty
 
         if self.difficulty == 1:
-            self.generator = SudokuGenerator(9, 30)
+            self.generator = SudokuGenerator(9, 1)
         elif self.difficulty == 2:
             self.generator = SudokuGenerator(9, 40)
         elif self.difficulty == 3:
