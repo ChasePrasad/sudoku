@@ -1,6 +1,6 @@
-
 import pygame
 import math
+import copy
 
 from sudoku_generator import SudokuGenerator
 from cell import Cell
@@ -20,32 +20,17 @@ class Board:
             self.generator = SudokuGenerator(9, 50)
 
         self.generator.fill_values()
-        self.answerBoard = self.generator.get_board()
-
-        for i in range(9):
-            for j in range(9):
-                print(self.answerBoard[i][j], end=' ')
-            print()
-        print()
+        self.answerBoard = copy.deepcopy(self.generator.get_board())
 
         self.generator.remove_cells()
-        self.playerBoardOriginal = self.generator.get_board()
-        self.playerBoardInputs = self.playerBoardOriginal.copy()
-
-        for i in range(9):
-            for j in range(9):
-                print(self.playerBoardOriginal[i][j], end=' ')
-            print()
-        print()
+        self.playerBoardOriginal = copy.deepcopy(self.generator.get_board())
+        self.playerBoardInput = copy.deepcopy(self.generator.get_board())
 
         self.boardList = [[0] * 9 for i in range(9)]
 
         for i in range(9):
             for j in range(9):
-                self.boardList[i][j] = Cell(self.playerBoardInputs[i][j], i, j, self.screen)
-
-    def setDifficulty(self, diff):
-        self.difficulty = diff
+                self.boardList[i][j] = Cell(self.playerBoardInput[i][j], i, j, self.screen)
 
     def getCell(self, row, col):
         return self.boardList[row][col]
@@ -59,8 +44,7 @@ class Board:
                     pygame.draw.line(self.screen, (0, 0, 0), (0, row * 60), (self.width, row * 60), 6)
 
     def click(self, xcoord, ycoord):
-
-        if ((0 < xcoord and xcoord < 540) and (0< ycoord and ycoord < 540)):
+        if ((0 < xcoord and xcoord < 540) and (0 < ycoord and ycoord < 540)):
             self.selectedColumn = math.floor(float(xcoord / 60))
             self.selectedRow = math.floor(float(ycoord / 60))
             return self.selectedRow, self.selectedColumn
@@ -79,6 +63,7 @@ class Board:
     def deselect(self, row, col):
         self.boardList[row][col].set_chosen(False)
         self.boardList[row][col].colored_cell(row, col)
+
     def clear(self, row, col):
         self.boardList[row][col].set_sketched_value(0)
 
@@ -86,38 +71,14 @@ class Board:
         self.boardList[row][col].set_sketched_value(value)
 
     def place_number(self, value, row, col):
-        self.userInputColumn, self.userInputRow = col, row
-        self.boardList[self.userInputRow][self.userInputColumn] = Cell(value, self.userInputRow, self.userInputColumn, self.screen)
-        self.update_board(value, self.userInputRow, self.userInputColumn)
+        self.boardList[row][col].set_cell_value(value)
+        self.update_board(value, row, col)
 
     def reset_to_original(self):
         for i in range(9):
             for j in range(9):
-                print(self.answerBoard[i][j], end=' ')
-            print()
-        print()
-
-        # for i in range(9):
-        #     for j in range(9):
-        #         print(self.playerBoardOriginal[i][j], end=' ')
-        #     print()
-
-        newArray = self.generator.get_board()
-
-        for i in range(9):
-            for j in range(9):
-                print(newArray[i][j], end=' ')
-            print()
-
-        for i in range(9):
-            for j in range(9):
-                # print("Answer board: \n" + str(self.answerBoard[i][j]))
-                # print("Original Board: \n" + str(self.playerBoardOriginal[i][j]))
                 self.boardList[i][j].set_sketched_value(0)
-
-                self.boardList[i][j].set_cell_value(newArray[i][j])
-
-
+                self.boardList[i][j].set_cell_value(self.playerBoardOriginal[i][j])
 
     def is_full(self):
         for i in range(9):
@@ -125,21 +86,13 @@ class Board:
                 if self.boardList[i][j].get_value() == 0:
                     return False
         return True
+    
     def update_board(self, value, row, col):
-        self.playerBoardInputs[row][col] = value
-
-    def find_empty(self):
-        for i in range(9):
-            for j in range(9):
-                if(Cell.get_value(self.boardList[i][j]) == 0):
-                    #returns row, column
-                    return i, j
-        return None
+        self.playerBoardInput[row][col] = value
 
     def check_board(self):
         for i in range(9):
             for j in range(9):
-                if(Cell.get_value(self.boardList[i][j]) != self.answerBoard[i][j]):
+                if(self.boardList[i][j].get_value() != self.answerBoard[i][j]):
                     return False
-
         return True
