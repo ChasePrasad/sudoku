@@ -150,7 +150,6 @@ def draw_game_run(difficulty):
                                     if board.check_board() == True:
                                         draw_game_won()
                                     else:
-
                                         draw_game_over()
         pygame.display.update()
 
