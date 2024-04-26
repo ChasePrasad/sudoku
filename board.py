@@ -13,22 +13,36 @@ class Board:
         self.difficulty = difficulty
 
         if self.difficulty == 1:
-            generator = SudokuGenerator(9, 30)
+            self.generator = SudokuGenerator(9, 30)
         elif self.difficulty == 2:
-            generator = SudokuGenerator(9, 40)
+            self.generator = SudokuGenerator(9, 40)
         elif self.difficulty == 3:
-            generator = SudokuGenerator(9, 50)
+            self.generator = SudokuGenerator(9, 50)
 
-        generator.fill_values()
-        self.answerBoard = generator.get_board()
-        generator.remove_cells()
-        self.playerBoard = generator.get_board()
+        self.generator.fill_values()
+        self.answerBoard = self.generator.get_board()
+
+        for i in range(9):
+            for j in range(9):
+                print(self.answerBoard[i][j], end=' ')
+            print()
+        print()
+
+        self.generator.remove_cells()
+        self.playerBoardOriginal = self.generator.get_board()
+        self.playerBoardInputs = self.playerBoardOriginal.copy()
+
+        for i in range(9):
+            for j in range(9):
+                print(self.playerBoardOriginal[i][j], end=' ')
+            print()
+        print()
 
         self.boardList = [[0] * 9 for i in range(9)]
 
         for i in range(9):
             for j in range(9):
-                self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
+                self.boardList[i][j] = Cell(self.playerBoardInputs[i][j], i, j, self.screen)
 
     def setDifficulty(self, diff):
         self.difficulty = diff
@@ -55,7 +69,7 @@ class Board:
 
     #finds which cell is selected, returns x and y coordinates
     def select(self, row, col):
-        if(self.boardList[self.selectedRow][self.selectedColumn].get_value() == 0):
+        if(self.boardList[row][col].get_value() == 0):
 
             self.boardList[row][col].set_chosen(True)
         else:
@@ -71,16 +85,37 @@ class Board:
     def sketch(self, value, row, col):
         self.boardList[row][col].set_sketched_value(value)
 
-    def place_number(self, value):
-        self.userInputColumn, self.userInputRow = self.select()
-        self.boardList[self.UserInputRow][self.userInputColumn] = Cell(value, self.UserInputRow, self.userInputColumn, self.screen)
-        self.update_board(value, self.UserInputRow, self.userInputColumn)
+    def place_number(self, value, row, col):
+        self.userInputColumn, self.userInputRow = col, row
+        self.boardList[self.userInputRow][self.userInputColumn] = Cell(value, self.userInputRow, self.userInputColumn, self.screen)
+        self.update_board(value, self.userInputRow, self.userInputColumn)
 
     def reset_to_original(self):
         for i in range(9):
             for j in range(9):
-                self.boardList[i][j] = Cell(self.playerBoard[i][j], i, j, self.screen)
+                print(self.answerBoard[i][j], end=' ')
+            print()
+        print()
+
+        # for i in range(9):
+        #     for j in range(9):
+        #         print(self.playerBoardOriginal[i][j], end=' ')
+        #     print()
+
+        newArray = self.generator.get_board()
+
+        for i in range(9):
+            for j in range(9):
+                print(newArray[i][j], end=' ')
+            print()
+
+        for i in range(9):
+            for j in range(9):
+                # print("Answer board: \n" + str(self.answerBoard[i][j]))
+                # print("Original Board: \n" + str(self.playerBoardOriginal[i][j]))
                 self.boardList[i][j].set_sketched_value(0)
+
+                self.boardList[i][j].set_cell_value(newArray[i][j])
 
 
 
@@ -91,7 +126,7 @@ class Board:
                     return False
         return True
     def update_board(self, value, row, col):
-        self.playerBoard[row][col] = value
+        self.playerBoardInputs[row][col] = value
 
     def find_empty(self):
         for i in range(9):
