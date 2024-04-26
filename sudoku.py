@@ -1,11 +1,10 @@
-
 import pygame
 from board import Board
 
 pygame.init()
 screen = pygame.display.set_mode((540, 600))
 pygame.display.set_caption("Sudoku")
-screen.fill(44)
+screen.fill((205, 173, 135))
 
 
 def main():
@@ -114,7 +113,6 @@ def draw_game_run(difficulty):
                         main()
                     elif button_exit.collidepoint(x, y):
                         exit()
-
                     # lets the user select a cell
                     else:
                         board.deselect(row, col)
@@ -210,7 +208,6 @@ def draw_game_over():
                     if button_over_restart.collidepoint(x, y):
                         main()
         pygame.display.update()
-
 
 if __name__ == "__main__":
     main()
