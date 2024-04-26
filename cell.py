@@ -56,3 +56,5 @@ class Cell:
 
         elif self.value == 0:
             pygame.draw.rect(self.screen, (205, 173, 135), pygame.Rect((self.row * 60 + 30) - 30 / 2, (self.column * 60 + 30) - 30 / 2, 35, 35))
+        elif self.value == 0:
+            pygame.draw.rect(self.screen, (205, 173, 135), pygame.Rect((self.row * 60 + 30) - 30 / 2, (self.column * 60 + 30) - 30 / 2, 35, 35))
