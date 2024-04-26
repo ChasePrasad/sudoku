@@ -132,7 +132,6 @@ def draw_game_run(difficulty):
     board = Board(540, 600, screen, difficulty)
     board.draw()
     row, col = 0, 0
-    num = 0
 
     # prints and centers a rectangle
     button_reset = pygame.draw.rect(screen, "white", pygame.Rect(75, 550, 90, 35))
@@ -184,16 +183,9 @@ def draw_game_run(difficulty):
                             board.draw()
 
                 case pygame.KEYDOWN:
-                    # lets the user place a number after sketching
-                    if event.key == pygame.K_RETURN:
-                        if row is not None and col is not None:
-                            sketched_value = board.getCell(row, col).get_sketched_value()
-                            if sketched_value != 0 and board.isValid(row, col, sketched_value):
-                                board.place_number(sketched_value)
-                                board.draw()
-
                     # lets the user sketch in each cell
-                    elif row is not None and col is not None:
+                    row, col = board.click(y, x)
+                    if row is not None and col is not None:
                         if board.getCell(row, col).get_value() not in range(1, 10):
                             if event.unicode.isdigit():
                                 if 0 < int(event.unicode) < 10:
@@ -205,6 +197,15 @@ def draw_game_run(difficulty):
                                         board.draw()
                                         board.sketch(int(event.unicode), row, col)
                                         board.draw()
+
+                    # lets the user place a number after sketching
+                    if event.key == pygame.K_RETURN:
+                        print("Enter Key pressed")
+                        if row is not None and col is not None:
+                            sketched_value = board.getCell(row, col).get_sketched_value()
+                            if sketched_value != 0:
+                                board.place_number(sketched_value, row, col)
+                                board.draw()
 
 
         pygame.display.update()
